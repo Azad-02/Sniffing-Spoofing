@@ -1,0 +1,67 @@
+Netsniff-ng - the packet sniffing beast
+
+SYNTAX
+	       netsniff-ng { [options] [filter-expression] }
+
+DESCRIPTION
+       netsniff-ng is a fast, minimal tool to analyze network packets, capture pcap files, replay pcap files, and redirect traffic between interfaces with the help of zero-copy packet(7) sockets. netsniff-
+       ng uses both Linux specific RX_RING and TX_RING interfaces to perform zero-copy. This is to avoid copy and system call overhead between kernel and user address space. When we started working on net‐
+       sniff-ng, the pcap(3) library did not use this zero-copy facility.
+
+OPTIONS:
+  -i|-d|--dev|--in <dev|pcap|->  Input source as netdev, pcap or pcap stdin
+  -o|--out <dev|pcap|dir|cfg|->  Output sink as netdev, pcap, directory, trafgen, or stdout
+  -C|--fanout-group <id>         Join packet fanout group
+  -K|--fanout-type <type>        Apply fanout discipline: hash|lb|cpu|rnd|roll|qm
+  -L|--fanout-opts <opts>        Additional fanout options: defrag|roll
+  -f|--filter <bpf-file|-|expr>  Use BPF filter from bpfc file/stdin or tcpdump-like expression
+  -t|--type <type>               Filter for: host|broadcast|multicast|others|outgoing
+  -F|--interval <size|time>      Dump interval if -o is a dir: <num>KiB/MiB/GiB/s/sec/min/hrs
+  -R|--rfraw                     Capture or inject raw 802.11 frames
+  -n|--num <0|uint>              Number of packets until exit (def: 0)
+  -P|--prefix <name>             Prefix for pcaps stored in directory
+  -O|--overwrite <N>             Limit the number of pcaps to N (file names use numbers 0 to N-1)
+  -T|--magic <pcap-magic>        Pcap magic number/pcap format to store, see -D
+  -w|--cooked                    Use Linux "cooked" header instead of link header
+  -D|--dump-pcap-types           Dump pcap types and magic numbers and quit
+  -B|--dump-bpf                  Dump generated BPF assembly
+  -r|--rand                      Randomize packet forwarding order (dev->dev)
+  -M|--no-promisc                No promiscuous mode for netdev
+  -A|--no-sock-mem               Don't tune core socket memory
+  -N|--no-hwtimestamp            Disable hardware time stamping
+  -m|--mmap                      Mmap(2) pcap file I/O, e.g. for replaying pcaps
+  -G|--sg                        Scatter/gather pcap file I/O
+  -c|--clrw                      Use slower read(2)/write(2) I/O
+  -S|--ring-size <size>          Specify ring size to: <num>KiB/MiB/GiB
+  -k|--kernel-pull <uint>        Kernel pull from user interval in us (def: 10us)
+  -J|--jumbo-support             Support replay/fwd 64KB Super Jumbo Frames (def: 2048B)
+  -b|--bind-cpu <cpu>            Bind to specific CPU
+  -u|--user <userid>             Drop privileges and change to userid
+  -g|--group <groupid>           Drop privileges and change to groupid
+  -H|--prio-high                 Make this high priority process
+  -Q|--notouch-irq               Do not touch IRQ CPU affinity of NIC
+  -s|--silent                    Do not print captured packets
+  -q|--less                      Print less-verbose packet information
+  -X|--hex                       Print packet data in hex format
+  -l|--ascii                     Print human-readable packet data
+  -U|--update                    Update GeoIP databases
+  -V|--verbose                   Be more verbose
+  -v|--version                   Show version and exit
+  -h|--help                      Guess what?!
+
+Examples:
+  netsniff-ng --in eth0 --out dump.pcap
+  netsniff-ng --in eth0 --out dump.pcap -s -T 0xa1b2c3d4 --bind-cpu 0 tcp or udp
+  netsniff-ng --in wlan0 --rfraw --out dump.pcap --silent --bind-cpu 0
+  netsniff-ng --in dump.pcap --mmap --out eth0 -k1000 --silent --bind-cpu 0
+  netsniff-ng --in dump.pcap --out dump.cfg --silent --bind-cpu 0
+  netsniff-ng --in dump.pcap --out dump2.pcap --silent tcp
+  netsniff-ng --in eth0 --out eth1 --silent --bind-cpu 0 -J --type host
+  netsniff-ng --in eth1 --out /opt/probe/ -s -m --interval 100MiB -b 0
+  netsniff-ng --in vlan0 --out dump.pcap -c -u `id -u bob` -g `id -g bob`
+  netsniff-ng --in any --filter http.bpf --jumbo-support --ascii -V
+
+Note:
+  For introducing bit errors, delays with random variation and more
+  while replaying pcaps, make use of tc(8) with its disciplines (e.g. netem).
+
