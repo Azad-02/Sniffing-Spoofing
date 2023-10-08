@@ -1,0 +1,84 @@
+Driftnet - capture images from network traffic and display them in an X window; optionally, capture audio streams and play them.
+
+SYNTAX
+	       driftnet [options] [filter code]
+
+DESCRIPTION
+       Driftnet watches network traffic, and picks out and displays JPEG and GIF images for display. It is an horrific invasion of privacy and shouldn't be used by anyone anywhere. It has been described as
+       `a graphical tcpdump(8)', `EtherPeg for Unix', and called all sorts of nasty names by people on Freshmeat. It is also possible to use driftnet to capture MPEG audio data from the network and play it
+       through a player such as mpg123(1).
+
+       Images may be saved by clicking on them.
+
+OPTIONS
+
+  -h               Display this help message.
+  -v               Verbose operation.
+  -b               Beep when a new image is captured.
+  -i interface     Select the interface on which to listen (default: all
+                   interfaces).
+  -f file          Instead of listening on an interface, read captured
+                   packets from a pcap dump file; file can be a named pipe
+                   for use with Kismet or similar.
+  -p               Do not put the listening interface into promiscuous mode.
+  -a               Adjunct mode: do not display images on screen, but save
+                   them to a temporary directory and announce their names on
+                   standard output.
+  -m number        Maximum number of images to keep in temporary directory
+                   in adjunct mode.
+  -d directory     Use the named temporary directory.
+  -x prefix        Prefix to use when saving images.
+  -s               Attempt to extract streamed audio data from the network,
+                   in addition to images. At present this supports MPEG data
+                   only.
+  -S               Extract streamed audio but not images.
+  -M command       Use the given command to play MPEG audio data extracted
+                   with the -s option; this should process MPEG frames
+                   supplied on standard input. Default: `mpg123 -'.
+  -Z username      Drop privileges to user 'username' after starting pcap.
+  -l               List the system capture interfaces.
+  -p               Put the interface in monitor mode (not supported on all interfaces).
+  -g               Enable GTK display (this is the default).
+  -w               Enable the HTTP server to display images.
+  -W               Port number for the HTTP server (implies -w). Default: 9090.
+
+Filter code can be specified after any options in the manner of tcpdump(8).
+The filter code will be evaluated as `tcp and (user filter code)'
+  -h               Display this help message.
+  -v               Verbose operation.
+  -b               Beep when a new image is captured.
+  -i interface     Select the interface on which to listen (default: all
+                   interfaces).
+  -f file          Instead of listening on an interface, read captured
+                   packets from a pcap dump file; file can be a named pipe
+                   for use with Kismet or similar.
+  -p               Do not put the listening interface into promiscuous mode.
+  -a               Adjunct mode: do not display images on screen, but save
+                   them to a temporary directory and announce their names on
+                   standard output.
+  -m number        Maximum number of images to keep in temporary directory
+                   in adjunct mode.
+  -d directory     Use the named temporary directory.
+  -x prefix        Prefix to use when saving images.
+  -s               Attempt to extract streamed audio data from the network,
+                   in addition to images. At present this supports MPEG data
+                   only.
+  -S               Extract streamed audio but not images.
+  -M command       Use the given command to play MPEG audio data extracted
+                   with the -s option; this should process MPEG frames
+                   supplied on standard input. Default: `mpg123 -'.
+  -Z username      Drop privileges to user 'username' after starting pcap.
+  -l               List the system capture interfaces.
+  -p               Put the interface in monitor mode (not supported on all interfaces).
+  -g               Enable GTK display (this is the default).
+  -w               Enable the HTTP server to display images.
+  -W               Port number for the HTTP server (implies -w). Default: 9090.
+
+Filter code can be specified after any options in the manner of tcpdump(8).
+The filter code will be evaluated as `tcp and (user filter code)'
+
+
+
+EXAMPLE
+
+	driftnet -i eth0
