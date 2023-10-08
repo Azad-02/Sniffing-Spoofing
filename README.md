@@ -25,3 +25,19 @@ Spoofing is the act of disguising a communication or identity so that it appears
    	8. Text Message Spoofing : The practice of Spoofing texts occurs when scammers use another person’s phone number to send a text message.
 	9. Extension Spoofing : Extension Spoofing is used by scammers to mask malware extension folders. These hacker files are often renamed as filename.txt.exe, and have malware hidden inside.
      
+# Tools :
+
+1. Macchanger
+
+2. Wireshark
+
+3. Ettercap
+
+4. Netsniff-ng
+
+5. MITMProxy
+
+6. Driftnet
+
+
+
