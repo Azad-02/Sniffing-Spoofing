@@ -23,5 +23,5 @@ Spoofing is the act of disguising a communication or identity so that it appears
  	6. ARP Spoofing : ARP Spoofing is to manipulate and steal data as well as hijack sessions. As a result, spammers will connect their media access control to the IP address to access the data belonging to the owner of that address.
   	7. Man-in-the-Middle (MitM) attack : MitM attacks occur when scammers hack a Wi-Fi network or create an identical counterfeit network to intercept web traffic between two parties. This allows scammers to reroute credit card numbers or login information to themselves.
    	8. Text Message Spoofing : The practice of Spoofing texts occurs when scammers use another person’s phone number to send a text message.
-    	9. Extension Spoofing : Extension Spoofing is used by scammers to mask malware extension folders. These hacker files are often renamed as filename.txt.exe, and have malware hidden inside.
+	9. Extension Spoofing : Extension Spoofing is used by scammers to mask malware extension folders. These hacker files are often renamed as filename.txt.exe, and have malware hidden inside.
      
