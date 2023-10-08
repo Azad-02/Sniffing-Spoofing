@@ -1,0 +1,125 @@
+Ettercap - a multipurpose sniffer/content filter for man in the middle attacks
+
+SYNTAX 
+	ettercap [OPTIONS] [TARGET1] [TARGET2]
+
+DESCRIPTION
+
+It has two main sniffing options:
+
+       UNIFIED:this method sniffs all the packets that pass on the cable. You can choose to put or not the interface in promisc mode (-p option). The packet not directed to the host running ettercap will
+       be forwarded automatically using layer 3 routing. So you can use a mitm attack launched from a different tool and let ettercap modify the packets and forward them for you.
+       The kernel ip_forwarding is always disabled by ettercap. This is done to prevent a forward of a packet twice (one by ettercap and one by the kernel).  This is an invasive behaviour on  gateways.  So
+       we  recommend you to use ettercap on the gateways ONLY with the UNOFFENSIVE MODE ENABLED. Since ettercap listens only on one network interface, launching it on the gateway in offensive mode will not
+       allow packets to be rerouted back from the second interface.
+
+       BRIDGED: it uses two network interfaces and forward the traffic from one to the other while performing sniffing and content filtering. This sniffing method is totally stealthy since there is no  way
+       to find that someone is in the middle on the cable.  You can look at this method as a mitm attack at layer 1. You will be in the middle of the cable between two entities. Don't use it on gateways or
+       it will transform your gateway into a bridge. HINT: you can use the content filtering engine to drop packets that should not pass. This way ettercap will work as an inline IPS ;)
+
+       You can also perform man in the middle attacks while using the unified sniffing. You can choose the mitm attack that you prefer. The mitm attack module is independent from the sniffing and filtering
+       process,  so  you can launch several attacks at the same time or use your own tool for the attack. The crucial point is that the packets have to arrive to ettercap with the correct mac address and a
+       different ip address (only these packets will be forwarded).
+
+The most relevant ettercap features are:
+
+       SSH1 support : you can sniff User and Pass, and even the data of an SSH1 connection. ettercap is the first software capable to sniff an SSH connection in FULL-DUPLEX
+
+       SSL support : you can sniff SSL secured data... a fake certificate is presented to the client and the session is decrypted.
+
+       Characters injection in an established connection : you can inject characters to the server (emulating commands) or to the client (emulating replies) maintaining the connection alive !!
+
+       Packet filtering/dropping: You can set up a filter script that searches for a particular string (even hex) in the TCP or UDP payload and replace it with yours or drop the entire packet. The  filter‐
+       ing engine can match any field of the network protocols and modify whatever you want (see etterfilter(8)).
+
+       Remote  traffic  sniffing through tunnels and route mangling: You can play with linux cooked interfaces or use the integrated plugin to sniff tunneled or route-mangled remote connections and perform
+       mitm attacks on them.
+
+       Plug-ins support : You can create your own plugin using the ettercap's API.
+
+       Password collector for : TELNET, FTP, POP, RLOGIN, SSH1, ICQ, SMB, MySQL, HTTP, NNTP, X11, NAPSTER, IRC, RIP, BGP, SOCKS 5, IMAP 4, VNC, LDAP, NFS, SNMP, HALF LIFE, QUAKE 3, MSN, YMSG (other  proto‐
+       cols coming soon...)
+
+       Passive  OS  fingerprint: you scan passively the lan (without sending any packet) and gather detailed info about the hosts in the LAN: Operating System, running services, open ports, IP, mac address
+       and network adapter vendor.
+
+       Kill a connection: from the connections list you can kill all the connections you want
+
+OPTIONS
+
+	ettercap [OPTIONS] [TARGET1] [TARGET2]
+
+TARGET is in the format MAC/IP/IPv6/PORTs 
+
+Sniffing and Attack options:
+  -M, --mitm <METHOD:ARGS>    perform a mitm attack
+  -o, --only-mitm             don't sniff, only perform the mitm attack
+  -b, --broadcast             sniff packets destined to broadcast
+  -B, --bridge <IFACE>        use bridged sniff (needs 2 ifaces)
+  -p, --nopromisc             do not put the iface in promisc mode
+  -S, --nosslmitm             do not forge SSL certificates
+  -u, --unoffensive           do not forward packets
+  -r, --read <file>           read data from pcapfile <file>
+  -f, --pcapfilter <string>   set the pcap filter <string>
+  -R, --reversed              use reversed TARGET matching
+  -t, --proto <proto>         sniff only this proto (default is all)
+      --certificate <file>    certificate file to use for SSL MiTM
+      --private-key <file>    private key file to use for SSL MiTM
+
+User Interface Type:
+  -T, --text                  use text only GUI
+       -q, --quiet                 do not display packet contents
+       -s, --script <CMD>          issue these commands to the GUI
+  -C, --curses                use curses GUI
+  -D, --daemon                daemonize ettercap (no GUI)
+  -G, --gtk                   use GTK+ GUI
+
+Logging options:
+  -w, --write <file>          write sniffed data to pcapfile <file>
+  -L, --log <logfile>         log all the traffic to this <logfile>
+  -l, --log-info <logfile>    log only passive infos to this <logfile>
+  -m, --log-msg <logfile>     log all the messages to this <logfile>
+  -c, --compress              use gzip compression on log files
+
+Visualization options:
+  -d, --dns                   resolves ip addresses into hostnames
+  -V, --visual <format>       set the visualization format
+  -e, --regex <regex>         visualize only packets matching this regex
+  -E, --ext-headers           print extended header for every pck
+  -Q, --superquiet            do not display user and password
+
+LUA options:
+      --lua-script <script1>,[<script2>,...]     comma-separted list of LUA scripts
+      --lua-args n1=v1,[n2=v2,...]               comma-separated arguments to LUA script(s)
+
+General options:
+  -i, --iface <iface>         use this network interface
+  -I, --liface                show all the network interfaces
+  -Y, --secondary <ifaces>    list of secondary network interfaces
+  -n, --netmask <netmask>     force this <netmask> on iface
+  -A, --address <address>     force this local <address> on iface
+  -P, --plugin <plugin>       launch this <plugin> - multiple occurance allowed
+      --plugin-list <plugin1>,[<plugin2>,...]       comma-separated list of plugins
+  -F, --filter <file>         load the filter <file> (content filter)
+  -z, --silent                do not perform the initial ARP scan
+  -6, --ip6scan               send ICMPv6 probes to discover IPv6 nodes on the link
+  -j, --load-hosts <file>     load the hosts list from <file>
+  -k, --save-hosts <file>     save the hosts list to <file>
+  -W, --wifi-key <wkey>       use this key to decrypt wifi packets (wep or wpa)
+  -a, --config <config>       use the alternative config file <config>
+
+Standard options:
+  -v, --version               prints the version and exit
+  -h, --help                  this help screen
+
+
+EXAMPLE
+
+	ettercap -Tq-1 end -w dump-ettercap -M ARP /192.168.0.16/ /192.168.0.1/
+
+		- -Tq: It is to use ettercap with the text interface (command line).
+		- -i en1: It is to use the interface en1 (wireless) connected to the network where I want to perform the MITM attack.
+		- -w dump: It stores the captured communication in the file named dump in a format readable by Wireshark.
+		- – M ARP: It is the option for performing a MITM attack with the ARP poisoning method.
+		- /192.168.0.4/: It is the victim’s IP address.
+		- /192.168.0.1/: It is the default GW IP address.
